@@ -1,0 +1,12 @@
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.csproj.AssemblyReference.cache
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.GeneratedMSBuildEditorConfig.editorconfig
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.AssemblyInfoInputs.cache
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.AssemblyInfo.cs
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.csproj.CoreCompileInputs.cache
+/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Debug/net8.0/RedisNuget.deps.json
+/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Debug/net8.0/RedisNuget.dll
+/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Debug/net8.0/RedisNuget.pdb
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.dll
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/refint/RedisNuget.dll
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.pdb
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/ref/RedisNuget.dll

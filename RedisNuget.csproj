@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>Azure.Redis.Resilient.Client</PackageId>
+        <PackageVersion>1.0.0</PackageVersion>
+        <Authors>Juan Marulanda</Authors>
+        <Description>Cliente resiliente de Redis para Azure con Managed Identity, Service Bus integration y patrones de resiliencia</Description>
+        <PackageTags>Redis;Azure;Resilience;ServiceBus;ManagedIdentity</PackageTags>
+        <RepositoryUrl>https://github.com/your-repo/redis-nuget</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
+        <PackageReference Include="Azure.Identity" Version="1.12.1" />
+        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.17.5" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Polly" Version="8.2.0" />
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    </ItemGroup>
+
+</Project>

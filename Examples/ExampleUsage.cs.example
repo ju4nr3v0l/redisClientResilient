@@ -1,0 +1,209 @@
+using Azure.Redis.Resilient.Client.Extensions;
+using Azure.Redis.Resilient.Client.Interfaces;
+using Azure.Redis.Resilient.Client.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+namespace Azure.Redis.Resilient.Client.Examples;
+
+// Ejemplo de modelo de datos
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+}
+
+// Ejemplo de servicio que usa el cliente Redis
+public class UserService
+{
+    private readonly IResilientRedisClient _redisClient;
+    private readonly ILogger<UserService> _logger;
+
+    public UserService(IResilientRedisClient redisClient, ILogger<UserService> logger)
+    {
+        _redisClient = redisClient;
+        _logger = logger;
+    }
+
+    /// <summary>
+    /// Obtiene un usuario con fallback automático
+    /// </summary>
+    public async Task<User?> GetUserAsync(int userId)
+    {
+        var key = $"user:{userId}";
+        
+        var result = await _redisClient.GetOrCreateAsync(key, async () =>
+        {
+            // Simular llamada a base de datos o API externa
+            _logger.LogInformation("Fetching user {UserId} from database", userId);
+            
+            return new User
+            {
+                Id = userId,
+                Name = $"User {userId}",
+                Email = $"user{userId}@example.com",
+                CreatedAt = DateTime.UtcNow
+            };
+        }, TimeSpan.FromMinutes(30));
+
+        if (result.Success)
+        {
+            _logger.LogInformation("User {UserId} retrieved successfully. FromCache: {FromCache}, FromFallback: {FromFallback}", 
+                userId, result.FromCache, result.FromFallback);
+        }
+        else
+        {
+            _logger.LogError("Failed to retrieve user {UserId}: {Error}", userId, result.ErrorMessage);
+        }
+
+        return result.Value;
+    }
+
+    /// <summary>
+    /// Guarda un usuario en cache
+    /// </summary>
+    public async Task<bool> SaveUserAsync(User user)
+    {
+        var key = $"user:{user.Id}";
+        var result = await _redisClient.SetAsync(key, user, TimeSpan.FromHours(1));
+        
+        if (result.Success)
+        {
+            _logger.LogInformation("User {UserId} cached successfully", user.Id);
+        }
+        else
+        {
+            _logger.LogError("Failed to cache user {UserId}: {Error}", user.Id, result.ErrorMessage);
+        }
+
+        return result.Success;
+    }
+
+    /// <summary>
+    /// Invalida el cache de un usuario
+    /// </summary>
+    public async Task<bool> InvalidateUserAsync(int userId)
+    {
+        var key = $"user:{userId}";
+        var result = await _redisClient.DeleteAsync(key);
+        
+        _logger.LogInformation("User {UserId} cache invalidated: {Success}", userId, result.Success);
+        return result.Success;
+    }
+
+    /// <summary>
+    /// Invalida múltiples usuarios por patrón
+    /// </summary>
+    public async Task<long> InvalidateUsersByPatternAsync(string pattern)
+    {
+        var result = await _redisClient.InvalidatePatternAsync($"user:{pattern}");
+        
+        _logger.LogInformation("Invalidated {Count} user cache entries with pattern: {Pattern}", 
+            result.Value, pattern);
+            
+        return result.Value ?? 0;
+    }
+}
+
+// Ejemplo de configuración en Program.cs
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = Host.CreateApplicationBuilder(args);
+
+        // Configurar logging
+        builder.Logging.AddConsole();
+
+        // Registrar el cliente Redis resiliente
+        builder.Services.AddResilientRedis(builder.Configuration);
+
+        // Registrar servicios de aplicación
+        builder.Services.AddScoped<UserService>();
+
+        var host = builder.Build();
+
+        // Ejemplo de uso
+        using var scope = host.Services.CreateScope();
+        var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+        try
+        {
+            logger.LogInformation("Starting Redis client example...");
+
+            // Obtener usuario (primera vez desde fallback)
+            var user1 = await userService.GetUserAsync(1);
+            logger.LogInformation("First call - User: {User}", user1?.Name);
+
+            // Obtener usuario (segunda vez desde cache)
+            var user2 = await userService.GetUserAsync(1);
+            logger.LogInformation("Second call - User: {User}", user2?.Name);
+
+            // Crear y guardar nuevo usuario
+            var newUser = new User
+            {
+                Id = 2,
+                Name = "Jane Doe",
+                Email = "jane@example.com",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await userService.SaveUserAsync(newUser);
+
+            // Obtener el usuario guardado
+            var savedUser = await userService.GetUserAsync(2);
+            logger.LogInformation("Saved user retrieved: {User}", savedUser?.Name);
+
+            // Invalidar cache
+            await userService.InvalidateUserAsync(1);
+            await userService.InvalidateUsersByPatternAsync("*");
+
+            logger.LogInformation("Redis client example completed successfully");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error in Redis client example");
+        }
+    }
+}
+
+// Ejemplo de configuración appsettings.json
+/*
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "Redis": {
+    "HostName": "your-redis-cache.redis.cache.windows.net",
+    "Port": 6380,
+    "UseSsl": true,
+    "UseManagedIdentity": true,
+    "DefaultExpirationMinutes": 60,
+    "KeyPrefix": "example-app",
+    "MaxRetryAttempts": 3,
+    "RetryDelaySeconds": 2
+  },
+  "ServiceBus": {
+    "Namespace": "your-servicebus-namespace",
+    "RedisEventsTopic": "redis-events",
+    "UseManagedIdentity": true,
+    "EnableEventPublishing": true
+  },
+  "FallbackService": {
+    "BaseUrl": "https://your-api.azurewebsites.net",
+    "TimeoutSeconds": 30,
+    "MaxRetryAttempts": 2,
+    "Headers": {
+      "X-API-Key": "your-api-key"
+    }
+  }
+}
+*/
