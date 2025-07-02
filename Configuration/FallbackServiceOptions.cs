@@ -1,7 +1,13 @@
-namespace Azure.Redis.Resilient.Client.Configuration;
+namespace ResilientRedis.Client.Configuration;
 
+/// <summary>
+/// Configuration options for fallback service behavior
+/// </summary>
 public class FallbackServiceOptions
 {
+    /// <summary>
+    /// Configuration section name for fallback service options
+    /// </summary>
     public const string SectionName = "FallbackService";
     
     /// <summary>

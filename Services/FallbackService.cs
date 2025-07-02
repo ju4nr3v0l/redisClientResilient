@@ -1,17 +1,26 @@
-using Azure.Redis.Resilient.Client.Configuration;
-using Azure.Redis.Resilient.Client.Interfaces;
+using ResilientRedis.Client.Configuration;
+using ResilientRedis.Client.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
-namespace Azure.Redis.Resilient.Client.Services;
+namespace ResilientRedis.Client.Services;
 
+/// <summary>
+/// Service for handling fallback operations when Redis is unavailable
+/// </summary>
 public class FallbackService : IFallbackService
 {
     private readonly HttpClient _httpClient;
     private readonly FallbackServiceOptions _options;
     private readonly ILogger<FallbackService> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the FallbackService class
+    /// </summary>
+    /// <param name="httpClient">HTTP client for external API calls</param>
+    /// <param name="options">Fallback service configuration options</param>
+    /// <param name="logger">Logger instance</param>
     public FallbackService(HttpClient httpClient, IOptions<FallbackServiceOptions> options, ILogger<FallbackService> logger)
     {
         _httpClient = httpClient;
@@ -29,6 +38,13 @@ public class FallbackService : IFallbackService
         }
     }
 
+    /// <summary>
+    /// Retrieves data from the fallback service
+    /// </summary>
+    /// <typeparam name="T">Type of data to retrieve</typeparam>
+    /// <param name="key">Key identifier for the data</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Retrieved data or default value</returns>
     public async Task<T?> GetDataAsync<T>(string key, CancellationToken cancellationToken = default)
     {
         try
@@ -63,6 +79,14 @@ public class FallbackService : IFallbackService
         }
     }
 
+    /// <summary>
+    /// Creates data in the fallback service
+    /// </summary>
+    /// <typeparam name="T">Type of data to create</typeparam>
+    /// <param name="key">Key identifier for the data</param>
+    /// <param name="parameters">Parameters for data creation</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Created data or default value</returns>
     public async Task<T?> CreateDataAsync<T>(string key, object parameters, CancellationToken cancellationToken = default)
     {
         try

@@ -1,5 +1,8 @@
-namespace Azure.Redis.Resilient.Client.Interfaces;
+namespace ResilientRedis.Client.Interfaces;
 
+/// <summary>
+/// Interface for fallback service when Redis is unavailable
+/// </summary>
 public interface IFallbackService
 {
     /// <summary>

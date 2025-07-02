@@ -1,14 +1,17 @@
 using Azure.Identity;
-using Azure.Redis.Resilient.Client.Configuration;
-using Azure.Redis.Resilient.Client.Interfaces;
-using Azure.Redis.Resilient.Client.Services;
+using ResilientRedis.Client.Configuration;
+using ResilientRedis.Client.Interfaces;
+using ResilientRedis.Client.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace Azure.Redis.Resilient.Client.Extensions;
+namespace ResilientRedis.Client.Extensions;
 
+/// <summary>
+/// Extension methods for configuring Redis resilient client services
+/// </summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>

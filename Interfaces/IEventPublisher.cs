@@ -1,7 +1,10 @@
-using Azure.Redis.Resilient.Client.Models;
+using ResilientRedis.Client.Models;
 
-namespace Azure.Redis.Resilient.Client.Interfaces;
+namespace ResilientRedis.Client.Interfaces;
 
+/// <summary>
+/// Interface for publishing Redis events to external systems
+/// </summary>
 public interface IEventPublisher
 {
     /// <summary>

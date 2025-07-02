@@ -5,9 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         
         <!-- Package Information -->
-        <PackageId>Azure.Redis.Resilient.Client</PackageId>
+        <PackageId>ResilientRedis.Client</PackageId>
         <PackageVersion>1.0.0</PackageVersion>
         <Title>Azure Redis Resilient Client</Title>
         <Authors>Juan Marulanda</Authors>
@@ -51,15 +52,6 @@ v1.0.0:
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        
-        <!-- Assembly Information -->
-        <AssemblyTitle>Azure Redis Resilient Client</AssemblyTitle>
-        <AssemblyDescription>A resilient Redis client for Azure with Managed Identity and Service Bus integration</AssemblyDescription>
-        <AssemblyCompany>Juan Marulanda</AssemblyCompany>
-        <AssemblyProduct>Azure Redis Resilient Client</AssemblyProduct>
-        <AssemblyCopyright>Copyright © Juan Marulanda 2024</AssemblyCopyright>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -67,6 +59,12 @@ v1.0.0:
         <None Include="LICENSE" Pack="true" PackagePath="\" />
         <None Include="icon.png" Pack="true" PackagePath="\" />
         <None Include="CHANGELOG.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Tests/**" />
+        <EmbeddedResource Remove="Tests/**" />
+        <None Remove="Tests/**" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,13 @@
-namespace Azure.Redis.Resilient.Client.Configuration;
+namespace ResilientRedis.Client.Configuration;
 
+/// <summary>
+/// Configuration options for Azure Service Bus integration
+/// </summary>
 public class ServiceBusOptions
 {
+    /// <summary>
+    /// Configuration section name for Service Bus options
+    /// </summary>
     public const string SectionName = "ServiceBus";
     
     /// <summary>

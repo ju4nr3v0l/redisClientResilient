@@ -1,14 +1,17 @@
 using Azure.Identity;
 using Azure.Messaging.ServiceBus;
-using Azure.Redis.Resilient.Client.Configuration;
-using Azure.Redis.Resilient.Client.Interfaces;
-using Azure.Redis.Resilient.Client.Models;
+using ResilientRedis.Client.Configuration;
+using ResilientRedis.Client.Interfaces;
+using ResilientRedis.Client.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
-namespace Azure.Redis.Resilient.Client.Services;
+namespace ResilientRedis.Client.Services;
 
+/// <summary>
+/// Service for publishing Redis events to Azure Service Bus
+/// </summary>
 public class EventPublisher : IEventPublisher, IDisposable
 {
     private readonly ServiceBusClient? _serviceBusClient;
@@ -17,6 +20,11 @@ public class EventPublisher : IEventPublisher, IDisposable
     private readonly ServiceBusOptions _options;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the EventPublisher class
+    /// </summary>
+    /// <param name="options">Service Bus configuration options</param>
+    /// <param name="logger">Logger instance</param>
     public EventPublisher(IOptions<ServiceBusOptions> options, ILogger<EventPublisher> logger)
     {
         _options = options.Value;
@@ -54,6 +62,12 @@ public class EventPublisher : IEventPublisher, IDisposable
         }
     }
 
+    /// <summary>
+    /// Publishes a Redis event to Service Bus
+    /// </summary>
+    /// <param name="redisEvent">The Redis event to publish</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Task representing the async operation</returns>
     public async Task PublishAsync(RedisEvent redisEvent, CancellationToken cancellationToken = default)
     {
         if (!_options.EnableEventPublishing || _sender == null)
@@ -90,6 +104,12 @@ public class EventPublisher : IEventPublisher, IDisposable
         }
     }
 
+    /// <summary>
+    /// Publishes multiple Redis events in batch to Service Bus
+    /// </summary>
+    /// <param name="events">Collection of Redis events to publish</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Task representing the async operation</returns>
     public async Task PublishBatchAsync(IEnumerable<RedisEvent> events, CancellationToken cancellationToken = default)
     {
         if (!_options.EnableEventPublishing || _sender == null)
@@ -133,6 +153,9 @@ public class EventPublisher : IEventPublisher, IDisposable
         }
     }
 
+    /// <summary>
+    /// Disposes the EventPublisher and releases resources
+    /// </summary>
     public void Dispose()
     {
         if (_disposed)

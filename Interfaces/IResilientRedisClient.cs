@@ -1,6 +1,6 @@
-using Azure.Redis.Resilient.Client.Models;
+using ResilientRedis.Client.Models;
 
-namespace Azure.Redis.Resilient.Client.Interfaces;
+namespace ResilientRedis.Client.Interfaces;
 
 /// <summary>
 /// Provides a resilient Redis client with automatic retry, fallback, and event publishing capabilities.

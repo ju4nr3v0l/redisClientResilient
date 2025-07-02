@@ -1,7 +1,13 @@
-namespace Azure.Redis.Resilient.Client.Configuration;
+namespace ResilientRedis.Client.Configuration;
 
+/// <summary>
+/// Configuration options for Redis connection and behavior
+/// </summary>
 public class RedisOptions
 {
+    /// <summary>
+    /// Configuration section name for Redis options
+    /// </summary>
     public const string SectionName = "Redis";
     
     /// <summary>

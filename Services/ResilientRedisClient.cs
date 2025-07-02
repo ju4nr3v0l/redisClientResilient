@@ -1,7 +1,7 @@
 using Azure.Identity;
-using Azure.Redis.Resilient.Client.Configuration;
-using Azure.Redis.Resilient.Client.Interfaces;
-using Azure.Redis.Resilient.Client.Models;
+using ResilientRedis.Client.Configuration;
+using ResilientRedis.Client.Interfaces;
+using ResilientRedis.Client.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -9,8 +9,11 @@ using StackExchange.Redis;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace Azure.Redis.Resilient.Client.Services;
+namespace ResilientRedis.Client.Services;
 
+/// <summary>
+/// Resilient Redis client with fallback capabilities and event publishing
+/// </summary>
 public class ResilientRedisClient : IResilientRedisClient, IDisposable
 {
     private readonly IConnectionMultiplexer _redis;
@@ -22,6 +25,14 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
     private readonly ResiliencePipeline _resiliencePipeline;
     private bool _disposed;
 
+    /// <summary>
+    /// Initializes a new instance of the ResilientRedisClient class
+    /// </summary>
+    /// <param name="redis">Redis connection multiplexer</param>
+    /// <param name="fallbackService">Fallback service for when Redis is unavailable</param>
+    /// <param name="eventPublisher">Event publisher for Redis operations</param>
+    /// <param name="options">Redis configuration options</param>
+    /// <param name="logger">Logger instance</param>
     public ResilientRedisClient(
         IConnectionMultiplexer redis,
         IFallbackService fallbackService,
@@ -49,6 +60,13 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
             .Build();
     }
 
+    /// <summary>
+    /// Gets a value from Redis cache with fallback support
+    /// </summary>
+    /// <typeparam name="T">Type of the cached value</typeparam>
+    /// <param name="key">Cache key</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result containing the value and metadata</returns>
     public async Task<CacheResult<T?>> GetAsync<T>(string key, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -94,6 +112,12 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets a string value from Redis cache with fallback support
+    /// </summary>
+    /// <param name="key">Cache key</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result containing the string value and metadata</returns>
     public async Task<CacheResult<string?>> GetStringAsync(string key, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -139,6 +163,15 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Sets a value in Redis cache
+    /// </summary>
+    /// <typeparam name="T">Type of the value to cache</typeparam>
+    /// <param name="key">Cache key</param>
+    /// <param name="value">Value to cache</param>
+    /// <param name="expiration">Optional expiration time</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result indicating success or failure</returns>
     public async Task<CacheResult<bool>> SetAsync<T>(string key, T value, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -186,6 +219,14 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Sets a string value in Redis cache
+    /// </summary>
+    /// <param name="key">Cache key</param>
+    /// <param name="value">String value to cache</param>
+    /// <param name="expiration">Optional expiration time</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result indicating success or failure</returns>
     public async Task<CacheResult<bool>> SetStringAsync(string key, string value, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -232,6 +273,12 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Deletes a value from Redis cache
+    /// </summary>
+    /// <param name="key">Cache key to delete</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result indicating success or failure</returns>
     public async Task<CacheResult<bool>> DeleteAsync(string key, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -276,6 +323,12 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Checks if a key exists in Redis cache
+    /// </summary>
+    /// <param name="key">Cache key to check</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result indicating if the key exists</returns>
     public async Task<CacheResult<bool>> ExistsAsync(string key, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -320,6 +373,15 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Gets a value from cache or creates it using the provided factory function
+    /// </summary>
+    /// <typeparam name="T">Type of the cached value</typeparam>
+    /// <param name="key">Cache key</param>
+    /// <param name="fallbackFactory">Function to create the value if not found in cache</param>
+    /// <param name="expiration">Optional expiration time for the cached value</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result containing the value and metadata</returns>
     public async Task<CacheResult<T?>> GetOrCreateAsync<T>(string key, Func<Task<T>> fallbackFactory, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
     {
         // Primero intentar obtener de Redis
@@ -380,6 +442,12 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Invalidates all cache entries matching the specified pattern
+    /// </summary>
+    /// <param name="pattern">Pattern to match cache keys (supports wildcards)</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Cache result containing the number of invalidated keys</returns>
     public async Task<CacheResult<long>> InvalidatePatternAsync(string pattern, CancellationToken cancellationToken = default)
     {
         var stopwatch = Stopwatch.StartNew();
@@ -446,6 +514,9 @@ public class ResilientRedisClient : IResilientRedisClient, IDisposable
         }
     }
 
+    /// <summary>
+    /// Disposes the ResilientRedisClient and releases resources
+    /// </summary>
     public void Dispose()
     {
         if (_disposed)

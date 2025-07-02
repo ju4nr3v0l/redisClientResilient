@@ -1,4 +1,4 @@
-# Azure Redis Resilient Client
+# Resilient Redis Client
 
 Un cliente resiliente para Azure Cache for Redis con soporte para Managed Identity, Service Bus events y patrones de fallback.
 
@@ -15,7 +15,7 @@ Un cliente resiliente para Azure Cache for Redis con soporte para Managed Identi
 ## Instalación
 
 ```bash
-dotnet add package Azure.Redis.Resilient.Client
+dotnet add package ResilientRedis.Client
 ```
 
 ## Configuración

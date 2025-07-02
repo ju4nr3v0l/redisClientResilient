@@ -20,7 +20,7 @@
 - Flexible configuration options</releaseNotes>
     <copyright>Copyright © Juan Marulanda 2024</copyright>
     <tags>Redis Azure Resilience ServiceBus ManagedIdentity Cache Fallback Polly Retry CircuitBreaker</tags>
-    <repository type="git" url="https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client" branch="main" commit="e2df613f177eecf975cd2d8c1414ef273cfd2bf5" />
+    <repository type="git" url="https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client" branch="main" commit="84d7eedfdb824ae61d126d51ea7baeb3e01a9b0d" />
     <dependencies>
       <group targetFramework="net8.0">
         <dependency id="Azure.Identity" version="1.12.1" exclude="Build,Analyzers" />

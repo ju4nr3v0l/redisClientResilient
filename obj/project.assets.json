@@ -2584,7 +2584,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj",
-      "projectName": "Azure.Redis.Resilient.Client",
+      "projectName": "ResilientRedis.Client",
       "projectPath": "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj",
       "packagesPath": "/Users/juanmarulanda/.nuget/packages/",
       "outputPath": "/Users/juanmarulanda/RiderProjects/RedisNuget/obj/",
@@ -2680,7 +2680,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/Users/juanmarulanda/.asdf/installs/dotnet-core/8.0.411/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/Users/juanmarulanda/.dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

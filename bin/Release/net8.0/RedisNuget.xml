@@ -4,132 +4,177 @@
         <name>RedisNuget</name>
     </assembly>
     <members>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.FallbackServiceOptions.BaseUrl">
+        <member name="T:ResilientRedis.Client.Configuration.FallbackServiceOptions">
+            <summary>
+            Configuration options for fallback service behavior
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Configuration.FallbackServiceOptions.SectionName">
+            <summary>
+            Configuration section name for fallback service options
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Configuration.FallbackServiceOptions.BaseUrl">
             <summary>
             URL base del servicio de fallback
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.FallbackServiceOptions.TimeoutSeconds">
+        <member name="P:ResilientRedis.Client.Configuration.FallbackServiceOptions.TimeoutSeconds">
             <summary>
             Timeout para llamadas HTTP en segundos
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.FallbackServiceOptions.MaxRetryAttempts">
+        <member name="P:ResilientRedis.Client.Configuration.FallbackServiceOptions.MaxRetryAttempts">
             <summary>
             Número máximo de reintentos para el servicio de fallback
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.FallbackServiceOptions.Headers">
+        <member name="P:ResilientRedis.Client.Configuration.FallbackServiceOptions.Headers">
             <summary>
             Headers adicionales para las peticiones HTTP
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.ConnectionString">
+        <member name="T:ResilientRedis.Client.Configuration.RedisOptions">
+            <summary>
+            Configuration options for Redis connection and behavior
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Configuration.RedisOptions.SectionName">
+            <summary>
+            Configuration section name for Redis options
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.ConnectionString">
             <summary>
             Connection string para Redis (puede incluir Managed Identity)
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.HostName">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.HostName">
             <summary>
             Nombre del host de Redis
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.Port">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.Port">
             <summary>
             Puerto de Redis
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.UseSsl">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.UseSsl">
             <summary>
             Usar SSL
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.UseManagedIdentity">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.UseManagedIdentity">
             <summary>
             Usar Managed Identity para autenticación
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.DefaultExpirationMinutes">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.DefaultExpirationMinutes">
             <summary>
             Tiempo de expiración por defecto en minutos
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.KeyPrefix">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.KeyPrefix">
             <summary>
             Prefijo para las claves de Redis
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.MaxRetryAttempts">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.MaxRetryAttempts">
             <summary>
             Número máximo de reintentos
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.RedisOptions.RetryDelaySeconds">
+        <member name="P:ResilientRedis.Client.Configuration.RedisOptions.RetryDelaySeconds">
             <summary>
             Tiempo de espera base para reintentos en segundos
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions.ConnectionString">
+        <member name="T:ResilientRedis.Client.Configuration.ServiceBusOptions">
+            <summary>
+            Configuration options for Azure Service Bus integration
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Configuration.ServiceBusOptions.SectionName">
+            <summary>
+            Configuration section name for Service Bus options
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.ConnectionString">
             <summary>
             Connection string de Service Bus
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions.Namespace">
+        <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.Namespace">
             <summary>
             Namespace de Service Bus
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions.RedisEventsTopic">
+        <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.RedisEventsTopic">
             <summary>
             Nombre del tópico para eventos de Redis
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions.UseManagedIdentity">
+        <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.UseManagedIdentity">
             <summary>
             Usar Managed Identity para Service Bus
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions.EnableEventPublishing">
+        <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.EnableEventPublishing">
             <summary>
             Habilitar publicación de eventos
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Extensions.ServiceCollectionExtensions.AddResilientRedis(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="T:ResilientRedis.Client.Extensions.ServiceCollectionExtensions">
+            <summary>
+            Extension methods for configuring Redis resilient client services
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Extensions.ServiceCollectionExtensions.AddResilientRedis(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Registra el cliente resiliente de Redis con todas sus dependencias
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Extensions.ServiceCollectionExtensions.AddResilientRedis(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{Azure.Redis.Resilient.Client.Configuration.RedisOptions},System.Action{Azure.Redis.Resilient.Client.Configuration.ServiceBusOptions},System.Action{Azure.Redis.Resilient.Client.Configuration.FallbackServiceOptions})">
+        <member name="M:ResilientRedis.Client.Extensions.ServiceCollectionExtensions.AddResilientRedis(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{ResilientRedis.Client.Configuration.RedisOptions},System.Action{ResilientRedis.Client.Configuration.ServiceBusOptions},System.Action{ResilientRedis.Client.Configuration.FallbackServiceOptions})">
             <summary>
             Registra el cliente resiliente de Redis con configuración personalizada
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IEventPublisher.PublishAsync(Azure.Redis.Resilient.Client.Models.RedisEvent,System.Threading.CancellationToken)">
+        <member name="T:ResilientRedis.Client.Interfaces.IEventPublisher">
+            <summary>
+            Interface for publishing Redis events to external systems
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Interfaces.IEventPublisher.PublishAsync(ResilientRedis.Client.Models.RedisEvent,System.Threading.CancellationToken)">
             <summary>
             Publica un evento de Redis en Service Bus
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IEventPublisher.PublishBatchAsync(System.Collections.Generic.IEnumerable{Azure.Redis.Resilient.Client.Models.RedisEvent},System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IEventPublisher.PublishBatchAsync(System.Collections.Generic.IEnumerable{ResilientRedis.Client.Models.RedisEvent},System.Threading.CancellationToken)">
             <summary>
             Publica múltiples eventos en batch
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IFallbackService.GetDataAsync``1(System.String,System.Threading.CancellationToken)">
+        <member name="T:ResilientRedis.Client.Interfaces.IFallbackService">
+            <summary>
+            Interface for fallback service when Redis is unavailable
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Interfaces.IFallbackService.GetDataAsync``1(System.String,System.Threading.CancellationToken)">
             <summary>
             Obtiene datos del servicio de fallback
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IFallbackService.CreateDataAsync``1(System.String,System.Object,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IFallbackService.CreateDataAsync``1(System.String,System.Object,System.Threading.CancellationToken)">
             <summary>
             Crea datos en el servicio de fallback
             </summary>
         </member>
-        <member name="T:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient">
+        <member name="T:ResilientRedis.Client.Interfaces.IResilientRedisClient">
             <summary>
             Provides a resilient Redis client with automatic retry, fallback, and event publishing capabilities.
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.GetAsync``1(System.String,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.GetAsync``1(System.String,System.Threading.CancellationToken)">
             <summary>
             Obtiene un valor del cache con resiliencia
             </summary>
@@ -138,7 +183,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado del cache con metadata</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.GetStringAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.GetStringAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Obtiene un valor del cache como string
             </summary>
@@ -146,7 +191,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado del cache con el valor como string</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
             <summary>
             Establece un valor en el cache
             </summary>
@@ -157,7 +202,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado de la operación</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.SetStringAsync(System.String,System.String,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.SetStringAsync(System.String,System.String,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
             <summary>
             Establece un valor string en el cache
             </summary>
@@ -167,7 +212,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado de la operación</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.DeleteAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.DeleteAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Elimina una clave del cache
             </summary>
@@ -175,7 +220,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado de la operación</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.ExistsAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.ExistsAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Verifica si existe una clave en el cache
             </summary>
@@ -183,7 +228,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado indicando si la clave existe</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.GetOrCreateAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.GetOrCreateAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
             <summary>
             Obtiene o crea un valor usando el servicio de fallback
             </summary>
@@ -194,7 +239,7 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Resultado con el valor obtenido del cache o del fallback</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Interfaces.IResilientRedisClient.InvalidatePatternAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:ResilientRedis.Client.Interfaces.IResilientRedisClient.InvalidatePatternAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Invalida múltiples claves por patrón
             </summary>
@@ -202,43 +247,43 @@
             <param name="cancellationToken">Token de cancelación</param>
             <returns>Número de claves eliminadas</returns>
         </member>
-        <member name="T:Azure.Redis.Resilient.Client.Models.CacheResult`1">
+        <member name="T:ResilientRedis.Client.Models.CacheResult`1">
             <summary>
             Represents the result of a cache operation with metadata about the execution.
             </summary>
             <typeparam name="T">The type of the cached value</typeparam>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.Value">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.Value">
             <summary>
             Gets or sets the cached value.
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.Success">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.Success">
             <summary>
             Gets or sets a value indicating whether the operation was successful.
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.FromCache">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.FromCache">
             <summary>
             Gets or sets a value indicating whether the value was retrieved from cache.
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.FromFallback">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.FromFallback">
             <summary>
             Gets or sets a value indicating whether the value was retrieved from the fallback service.
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.ErrorMessage">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.ErrorMessage">
             <summary>
             Gets or sets the error message if the operation failed.
             </summary>
         </member>
-        <member name="P:Azure.Redis.Resilient.Client.Models.CacheResult`1.ExecutionTime">
+        <member name="P:ResilientRedis.Client.Models.CacheResult`1.ExecutionTime">
             <summary>
             Gets or sets the execution time of the operation.
             </summary>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Models.CacheResult`1.SuccessFromCache(`0,System.TimeSpan)">
+        <member name="M:ResilientRedis.Client.Models.CacheResult`1.SuccessFromCache(`0,System.TimeSpan)">
             <summary>
             Creates a successful result from cache.
             </summary>
@@ -246,7 +291,7 @@
             <param name="executionTime">The execution time</param>
             <returns>A successful cache result</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Models.CacheResult`1.SuccessFromFallback(`0,System.TimeSpan)">
+        <member name="M:ResilientRedis.Client.Models.CacheResult`1.SuccessFromFallback(`0,System.TimeSpan)">
             <summary>
             Creates a successful result from fallback service.
             </summary>
@@ -254,13 +299,276 @@
             <param name="executionTime">The execution time</param>
             <returns>A successful fallback result</returns>
         </member>
-        <member name="M:Azure.Redis.Resilient.Client.Models.CacheResult`1.Failure(System.String,System.TimeSpan)">
+        <member name="M:ResilientRedis.Client.Models.CacheResult`1.Failure(System.String,System.TimeSpan)">
             <summary>
             Creates a failed result.
             </summary>
             <param name="errorMessage">The error message</param>
             <param name="executionTime">The execution time</param>
             <returns>A failed result</returns>
+        </member>
+        <member name="T:ResilientRedis.Client.Models.RedisEvent">
+            <summary>
+            Represents an event that occurred during Redis operations
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.EventId">
+            <summary>
+            Unique identifier for the event
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.EventType">
+            <summary>
+            Type of Redis event that occurred
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Key">
+            <summary>
+            Redis key involved in the operation
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Value">
+            <summary>
+            Value associated with the operation (if applicable)
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Timestamp">
+            <summary>
+            Timestamp when the event occurred
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Source">
+            <summary>
+            Source of the event (typically the service name)
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Success">
+            <summary>
+            Indicates whether the operation was successful
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.ErrorMessage">
+            <summary>
+            Error message if the operation failed
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.FallbackUsed">
+            <summary>
+            Indicates whether fallback service was used
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.ExecutionTimeMs">
+            <summary>
+            Execution time in milliseconds
+            </summary>
+        </member>
+        <member name="P:ResilientRedis.Client.Models.RedisEvent.Metadata">
+            <summary>
+            Additional metadata for the event
+            </summary>
+        </member>
+        <member name="T:ResilientRedis.Client.Models.RedisEventType">
+            <summary>
+            Types of Redis events that can occur
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.Get">
+            <summary>
+            Get operation performed
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.Set">
+            <summary>
+            Set operation performed
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.Delete">
+            <summary>
+            Delete operation performed
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.Exists">
+            <summary>
+            Exists check performed
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.FallbackTriggered">
+            <summary>
+            Fallback service was triggered
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.CacheHit">
+            <summary>
+            Cache hit occurred
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.CacheMiss">
+            <summary>
+            Cache miss occurred
+            </summary>
+        </member>
+        <member name="F:ResilientRedis.Client.Models.RedisEventType.Error">
+            <summary>
+            Error occurred during operation
+            </summary>
+        </member>
+        <member name="T:ResilientRedis.Client.Services.EventPublisher">
+            <summary>
+            Service for publishing Redis events to Azure Service Bus
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.EventPublisher.#ctor(Microsoft.Extensions.Options.IOptions{ResilientRedis.Client.Configuration.ServiceBusOptions},Microsoft.Extensions.Logging.ILogger{ResilientRedis.Client.Services.EventPublisher})">
+            <summary>
+            Initializes a new instance of the EventPublisher class
+            </summary>
+            <param name="options">Service Bus configuration options</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.EventPublisher.PublishAsync(ResilientRedis.Client.Models.RedisEvent,System.Threading.CancellationToken)">
+            <summary>
+            Publishes a Redis event to Service Bus
+            </summary>
+            <param name="redisEvent">The Redis event to publish</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Task representing the async operation</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.EventPublisher.PublishBatchAsync(System.Collections.Generic.IEnumerable{ResilientRedis.Client.Models.RedisEvent},System.Threading.CancellationToken)">
+            <summary>
+            Publishes multiple Redis events in batch to Service Bus
+            </summary>
+            <param name="events">Collection of Redis events to publish</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Task representing the async operation</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.EventPublisher.Dispose">
+            <summary>
+            Disposes the EventPublisher and releases resources
+            </summary>
+        </member>
+        <member name="T:ResilientRedis.Client.Services.FallbackService">
+            <summary>
+            Service for handling fallback operations when Redis is unavailable
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.FallbackService.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptions{ResilientRedis.Client.Configuration.FallbackServiceOptions},Microsoft.Extensions.Logging.ILogger{ResilientRedis.Client.Services.FallbackService})">
+            <summary>
+            Initializes a new instance of the FallbackService class
+            </summary>
+            <param name="httpClient">HTTP client for external API calls</param>
+            <param name="options">Fallback service configuration options</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.FallbackService.GetDataAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves data from the fallback service
+            </summary>
+            <typeparam name="T">Type of data to retrieve</typeparam>
+            <param name="key">Key identifier for the data</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Retrieved data or default value</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.FallbackService.CreateDataAsync``1(System.String,System.Object,System.Threading.CancellationToken)">
+            <summary>
+            Creates data in the fallback service
+            </summary>
+            <typeparam name="T">Type of data to create</typeparam>
+            <param name="key">Key identifier for the data</param>
+            <param name="parameters">Parameters for data creation</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Created data or default value</returns>
+        </member>
+        <member name="T:ResilientRedis.Client.Services.ResilientRedisClient">
+            <summary>
+            Resilient Redis client with fallback capabilities and event publishing
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.#ctor(StackExchange.Redis.IConnectionMultiplexer,ResilientRedis.Client.Interfaces.IFallbackService,ResilientRedis.Client.Interfaces.IEventPublisher,Microsoft.Extensions.Options.IOptions{ResilientRedis.Client.Configuration.RedisOptions},Microsoft.Extensions.Logging.ILogger{ResilientRedis.Client.Services.ResilientRedisClient})">
+            <summary>
+            Initializes a new instance of the ResilientRedisClient class
+            </summary>
+            <param name="redis">Redis connection multiplexer</param>
+            <param name="fallbackService">Fallback service for when Redis is unavailable</param>
+            <param name="eventPublisher">Event publisher for Redis operations</param>
+            <param name="options">Redis configuration options</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.GetAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets a value from Redis cache with fallback support
+            </summary>
+            <typeparam name="T">Type of the cached value</typeparam>
+            <param name="key">Cache key</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result containing the value and metadata</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.GetStringAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets a string value from Redis cache with fallback support
+            </summary>
+            <param name="key">Cache key</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result containing the string value and metadata</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.SetAsync``1(System.String,``0,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Sets a value in Redis cache
+            </summary>
+            <typeparam name="T">Type of the value to cache</typeparam>
+            <param name="key">Cache key</param>
+            <param name="value">Value to cache</param>
+            <param name="expiration">Optional expiration time</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result indicating success or failure</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.SetStringAsync(System.String,System.String,System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Sets a string value in Redis cache
+            </summary>
+            <param name="key">Cache key</param>
+            <param name="value">String value to cache</param>
+            <param name="expiration">Optional expiration time</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result indicating success or failure</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.DeleteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a value from Redis cache
+            </summary>
+            <param name="key">Cache key to delete</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result indicating success or failure</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.ExistsAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Checks if a key exists in Redis cache
+            </summary>
+            <param name="key">Cache key to check</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result indicating if the key exists</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.GetOrCreateAsync``1(System.String,System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
+            <summary>
+            Gets a value from cache or creates it using the provided factory function
+            </summary>
+            <typeparam name="T">Type of the cached value</typeparam>
+            <param name="key">Cache key</param>
+            <param name="fallbackFactory">Function to create the value if not found in cache</param>
+            <param name="expiration">Optional expiration time for the cached value</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result containing the value and metadata</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.InvalidatePatternAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Invalidates all cache entries matching the specified pattern
+            </summary>
+            <param name="pattern">Pattern to match cache keys (supports wildcards)</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <returns>Cache result containing the number of invalidated keys</returns>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.ResilientRedisClient.Dispose">
+            <summary>
+            Disposes the ResilientRedisClient and releases resources
+            </summary>
         </member>
     </members>
 </doc>

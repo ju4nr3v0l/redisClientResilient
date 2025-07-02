@@ -1,4 +1,4 @@
-namespace Azure.Redis.Resilient.Client.Models;
+namespace ResilientRedis.Client.Models;
 
 /// <summary>
 /// Represents the result of a cache operation with metadata about the execution.
