@@ -11,12 +11,12 @@ public class ServiceBusOptions
     public const string SectionName = "ServiceBus";
     
     /// <summary>
-    /// Connection string de Service Bus
+    /// Connection string de Service Bus (usado cuando no se usa Managed Identity)
     /// </summary>
-    public string ConnectionString { get; set; } = string.Empty;
+    public string? ConnectionString { get; set; }
     
     /// <summary>
-    /// Namespace de Service Bus
+    /// Namespace de Service Bus (requerido cuando se usa Managed Identity)
     /// </summary>
     public string Namespace { get; set; } = string.Empty;
     
@@ -26,12 +26,12 @@ public class ServiceBusOptions
     public string RedisEventsTopic { get; set; } = "redis-events";
     
     /// <summary>
-    /// Usar Managed Identity para Service Bus
+    /// Usar Managed Identity para Service Bus (opcional)
     /// </summary>
-    public bool UseManagedIdentity { get; set; } = true;
+    public bool UseManagedIdentity { get; set; } = false;
     
     /// <summary>
-    /// Habilitar publicación de eventos
+    /// Habilitar publicación de eventos (opcional)
     /// </summary>
-    public bool EnableEventPublishing { get; set; } = true;
+    public bool EnableEventPublishing { get; set; } = false;
 }

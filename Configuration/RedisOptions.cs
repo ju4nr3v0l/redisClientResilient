@@ -11,12 +11,12 @@ public class RedisOptions
     public const string SectionName = "Redis";
     
     /// <summary>
-    /// Connection string para Redis (puede incluir Managed Identity)
+    /// Connection string para Redis (usado cuando no se usa Managed Identity)
     /// </summary>
-    public string ConnectionString { get; set; } = string.Empty;
+    public string? ConnectionString { get; set; }
     
     /// <summary>
-    /// Nombre del host de Redis
+    /// Nombre del host de Redis (requerido cuando se usa Managed Identity)
     /// </summary>
     public string HostName { get; set; } = string.Empty;
     
@@ -31,9 +31,9 @@ public class RedisOptions
     public bool UseSsl { get; set; } = true;
     
     /// <summary>
-    /// Usar Managed Identity para autenticación
+    /// Usar Managed Identity para autenticación (opcional)
     /// </summary>
-    public bool UseManagedIdentity { get; set; } = true;
+    public bool UseManagedIdentity { get; set; } = false;
     
     /// <summary>
     /// Tiempo de expiración por defecto en minutos

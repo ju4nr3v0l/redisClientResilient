@@ -5,63 +5,65 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-07-02
+## [1.1.0] - 2025-01-02
 
-### Agregado
-- ✅ Cliente Redis resiliente con reintentos automáticos usando Polly
-- ✅ Soporte completo para Azure Managed Identity
-- ✅ Integración con Azure Service Bus para publicación de eventos
-- ✅ Sistema de fallback automático cuando Redis no está disponible
-- ✅ Logging estructurado con diferentes niveles de detalle
-- ✅ Configuración flexible a través de appsettings.json o código
-- ✅ Operaciones básicas: Get, Set, Delete, Exists
-- ✅ Operación avanzada: GetOrCreateAsync con fallback automático
-- ✅ Invalidación de cache por patrones
-- ✅ Métricas de rendimiento y tiempo de ejecución
-- ✅ Soporte para prefijos de claves personalizables
-- ✅ Manejo robusto de errores y excepciones
-- ✅ Documentación completa con ejemplos
-- ✅ Guía para desarrolladores
-- ✅ Ejemplos de configuración y uso
+### ✨ Added
+- **Configuración opcional para Managed Identity**: Ahora `UseManagedIdentity` es `false` por defecto
+- **Configuración opcional para Service Bus**: Ahora `EnableEventPublishing` es `false` por defecto
+- **Método `AddResilientRedisBasic()`**: Para usar solo Redis sin Service Bus ni Fallback
+- **Implementaciones NoOp**: `NoOpEventPublisher` y `NoOpFallbackService` para cuando las características están deshabilitadas
+- **Soporte para Connection String**: Alternativa a Managed Identity para conexiones Redis
+- **Ejemplos completos**: Carpeta `examples/` con patrones de uso comunes
+- **Guía de patrones de fallback**: Documentación detallada en `FALLBACK_PATTERNS.md`
 
-### Características Técnicas
-- **Target Framework**: .NET 8.0
-- **Dependencias principales**:
-  - StackExchange.Redis 2.7.33
-  - Azure.Identity 1.12.1
-  - Azure.Messaging.ServiceBus 7.17.5
-  - Polly 8.2.0
-  - System.Text.Json 8.0.5
+### 🔧 Changed
+- **Namespace**: Cambiado de `Azure.Redis.Resilient.Client` a `ResilientRedis.Client` (namespace no reservado)
+- **Package ID**: Cambiado de `Azure.Redis.Resilient.Client` a `ResilientRedis.Client`
+- **Configuración por defecto**: Managed Identity y Service Bus ahora son opcionales (deshabilitados por defecto)
+- **RedisOptions.ConnectionString**: Ahora es nullable para soportar configuración con Managed Identity
 
-### Patrones Implementados
-- **Retry Pattern**: Reintentos con backoff exponencial
-- **Circuit Breaker**: Prevención de llamadas cuando el servicio está caído
-- **Timeout Pattern**: Timeouts configurables
-- **Fallback Pattern**: Respaldo automático a servicios alternativos
+### 📚 Documentation
+- **README actualizado**: Ejemplos de configuración flexible y patrones de fallback
+- **Nuevos ejemplos**: BasicUsage, ManagedIdentityExample, MicroserviceFallback
+- **Guía de patrones**: Documentación detallada de diferentes estrategias de fallback
 
-### Eventos de Service Bus
-- `CacheHit`: Cuando se encuentra un valor en cache
-- `CacheMiss`: Cuando no se encuentra un valor en cache
-- `FallbackTriggered`: Cuando se usa el servicio de fallback
-- `Error`: Cuando ocurre un error en las operaciones
-- `Set`: Cuando se guarda un valor en cache
-- `Delete`: Cuando se elimina un valor del cache
+### 🛠️ Technical
+- **Inyección de dependencias mejorada**: Registro condicional de servicios basado en configuración
+- **Mejor manejo de errores**: Validación de configuración mejorada
+- **Scripts actualizados**: Scripts de publicación actualizados para nueva versión
 
-### Configuración
-- Soporte para connection strings tradicionales
-- Soporte para Managed Identity en Azure
-- Configuración de Service Bus con Managed Identity
-- Configuración de servicios de fallback con headers personalizados
-- Configuración de timeouts y reintentos
+## [1.0.0] - 2025-01-02
 
-## [Unreleased]
+### ✨ Added
+- **Cliente Redis resiliente**: Implementación base con Polly para reintentos y circuit breaker
+- **Soporte para Managed Identity**: Autenticación segura con Azure Identity
+- **Integración con Service Bus**: Publicación automática de eventos Redis
+- **Servicio de Fallback**: Sistema de respaldo con HttpClient
+- **Configuración flexible**: Soporte para appsettings.json y configuración programática
+- **Logging estructurado**: Logging completo con diferentes niveles
+- **Documentación XML**: Comentarios XML completos para IntelliSense
+- **Tests unitarios**: Suite básica de pruebas con xUnit, Moq y FluentAssertions
+- **Scripts de automatización**: Scripts para validación, testing y publicación
 
-### Planeado para futuras versiones
-- [ ] Soporte para Redis Cluster
-- [ ] Operaciones batch optimizadas
-- [ ] Compresión automática de valores grandes
-- [ ] Métricas de Application Insights integradas
-- [ ] Soporte para múltiples instancias de Redis
-- [ ] Cache warming automático
-- [ ] Distributed locking
-- [ ] Pub/Sub integration
+### 🏗️ Architecture
+- **Patrón Repository**: Interfaces bien definidas para extensibilidad
+- **Dependency Injection**: Integración completa con Microsoft.Extensions.DependencyInjection
+- **Configuration Pattern**: Uso de IOptions para configuración tipada
+- **Event-Driven**: Publicación de eventos para monitoreo y auditoría
+
+### 📦 Package
+- **NuGet Package**: Configuración completa para publicación en NuGet.org
+- **Symbols Package**: Soporte para debugging con símbolos
+- **Multi-targeting**: Soporte para .NET 8.0
+- **Dependencies**: Dependencias mínimas y bien versionadas
+
+---
+
+## Tipos de Cambios
+
+- `Added` para nuevas características
+- `Changed` para cambios en funcionalidad existente
+- `Deprecated` para características que serán removidas
+- `Removed` para características removidas
+- `Fixed` para corrección de bugs
+- `Security` para vulnerabilidades de seguridad

@@ -5,7 +5,7 @@
   },
   "projects": {
     "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj": {
-      "version": "1.0.0",
+      "version": "1.1.0",
       "restore": {
         "projectUniqueName": "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj",
         "projectName": "ResilientRedis.Client",
@@ -104,7 +104,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/juanmarulanda/.dotnet/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/juanmarulanda/.asdf/installs/dotnet-core/8.0.411/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

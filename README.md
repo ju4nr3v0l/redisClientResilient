@@ -1,13 +1,13 @@
 # Resilient Redis Client
 
-Un cliente resiliente para Azure Cache for Redis con soporte para Managed Identity, Service Bus events y patrones de fallback.
+Un cliente resiliente para Azure Cache for Redis con soporte **opcional** para Managed Identity, Service Bus events y patrones de fallback.
 
 ## Características
 
 - ✅ **Resiliencia**: Reintentos automáticos con backoff exponencial
-- ✅ **Managed Identity**: Autenticación segura sin connection strings
-- ✅ **Service Bus Integration**: Publicación automática de eventos
-- ✅ **Fallback Service**: Sistema de respaldo cuando Redis no está disponible
+- ✅ **Managed Identity**: Autenticación segura sin connection strings (opcional)
+- ✅ **Service Bus Integration**: Publicación automática de eventos (opcional)
+- ✅ **Fallback Service**: Sistema de respaldo cuando Redis no está disponible (opcional)
 - ✅ **Logging**: Logging estructurado con diferentes niveles
 - ✅ **Métricas**: Seguimiento de rendimiento y eventos
 - ✅ **Configuración flexible**: Múltiples formas de configuración
@@ -18,32 +18,76 @@ Un cliente resiliente para Azure Cache for Redis con soporte para Managed Identi
 dotnet add package ResilientRedis.Client
 ```
 
-## Configuración
+## Configuraciones Disponibles
 
-### appsettings.json
+### 🔧 **Configuración Básica (Solo Redis)**
+
+Para usar solo Redis sin Service Bus ni Fallback:
+
+```csharp
+// Program.cs
+builder.Services.AddResilientRedisBasic(redis =>
+{
+    redis.ConnectionString = "your-redis-connection-string";
+    redis.KeyPrefix = "myapp";
+});
+```
+
+### 🔧 **Configuración con Managed Identity**
+
+```csharp
+builder.Services.AddResilientRedis(redis =>
+{
+    redis.HostName = "your-redis-cache.redis.cache.windows.net";
+    redis.UseManagedIdentity = true;
+    redis.KeyPrefix = "myapp";
+});
+```
+
+### 🔧 **Configuración Completa con Service Bus**
+
+```csharp
+builder.Services.AddResilientRedis(
+    redis =>
+    {
+        redis.HostName = "your-redis-cache.redis.cache.windows.net";
+        redis.UseManagedIdentity = true;
+        redis.KeyPrefix = "myapp";
+    },
+    serviceBus =>
+    {
+        serviceBus.Namespace = "your-servicebus-namespace";
+        serviceBus.EnableEventPublishing = true;
+        serviceBus.UseManagedIdentity = true;
+    },
+    fallback =>
+    {
+        fallback.BaseUrl = "https://your-api.azurewebsites.net";
+        fallback.TimeoutSeconds = 30;
+    });
+```
+
+### 🔧 **Configuración desde appsettings.json**
 
 ```json
 {
   "Redis": {
+    "ConnectionString": "your-redis-connection-string",
+    // O para Managed Identity:
     "HostName": "your-redis-cache.redis.cache.windows.net",
-    "Port": 6380,
-    "UseSsl": true,
     "UseManagedIdentity": true,
-    "DefaultExpirationMinutes": 60,
     "KeyPrefix": "myapp",
-    "MaxRetryAttempts": 3,
-    "RetryDelaySeconds": 2
+    "DefaultExpirationMinutes": 60
   },
   "ServiceBus": {
+    "EnableEventPublishing": true,
     "Namespace": "your-servicebus-namespace",
-    "RedisEventsTopic": "redis-events",
     "UseManagedIdentity": true,
-    "EnableEventPublishing": true
+    "RedisEventsTopic": "redis-events"
   },
   "FallbackService": {
     "BaseUrl": "https://your-api.azurewebsites.net",
     "TimeoutSeconds": 30,
-    "MaxRetryAttempts": 2,
     "Headers": {
       "X-API-Key": "your-api-key"
     }
@@ -51,25 +95,9 @@ dotnet add package ResilientRedis.Client
 }
 ```
 
-### Startup.cs / Program.cs
-
 ```csharp
-using Azure.Redis.Resilient.Client.Extensions;
-
-// Configuración desde appsettings.json
+// Program.cs
 builder.Services.AddResilientRedis(builder.Configuration);
-
-// O configuración programática
-builder.Services.AddResilientRedis(redis =>
-{
-    redis.HostName = "your-redis-cache.redis.cache.windows.net";
-    redis.UseManagedIdentity = true;
-    redis.KeyPrefix = "myapp";
-}, serviceBus =>
-{
-    serviceBus.Namespace = "your-servicebus-namespace";
-    serviceBus.EnableEventPublishing = true;
-});
 ```
 
 ## Uso Básico
@@ -97,53 +125,169 @@ public class UserService
 
         return result.Value;
     }
+}
+```
 
-    public async Task<bool> CacheUserAsync(User user)
+## Patrones de Fallback
+
+### 🔄 **Patrón 1: Fallback a Base de Datos**
+
+```csharp
+public class ProductService
+{
+    private readonly IResilientRedisClient _redisClient;
+    private readonly IProductRepository _repository;
+
+    public async Task<Product?> GetProductAsync(int productId)
     {
-        var key = $"user:{user.Id}";
-        var result = await _redisClient.SetAsync(key, user, TimeSpan.FromHours(1));
+        var key = $"product:{productId}";
         
-        return result.Success;
+        var result = await _redisClient.GetOrCreateAsync(key, async () =>
+        {
+            // Fallback: obtener de base de datos
+            var product = await _repository.GetByIdAsync(productId);
+            return product;
+        }, TimeSpan.FromHours(1));
+
+        return result.Value;
     }
 }
 ```
 
-## Uso Avanzado
-
-### Operaciones con Resultados Detallados
+### 🔄 **Patrón 2: Fallback a Microservicio Externo**
 
 ```csharp
-public async Task<ApiResponse<User>> GetUserWithMetricsAsync(int userId)
+public class InventoryService
 {
-    var key = $"user:{userId}";
-    var result = await _redisClient.GetAsync<User>(key);
+    private readonly IResilientRedisClient _redisClient;
+    private readonly HttpClient _httpClient;
 
-    return new ApiResponse<User>
+    public async Task<InventoryItem?> GetInventoryAsync(string sku)
     {
-        Data = result.Value,
-        FromCache = result.FromCache,
-        FromFallback = result.FromFallback,
-        ExecutionTime = result.ExecutionTime,
-        Success = result.Success
-    };
+        var key = $"inventory:{sku}";
+        
+        var result = await _redisClient.GetOrCreateAsync(key, async () =>
+        {
+            // Fallback: llamar a microservicio de inventario
+            var response = await _httpClient.GetAsync($"/api/inventory/{sku}");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<InventoryItem>(json);
+            }
+            return null;
+        }, TimeSpan.FromMinutes(15));
+
+        return result.Value;
+    }
 }
 ```
 
-### Invalidación por Patrón
+### 🔄 **Patrón 3: Microservicio Responsable de Cache**
+
+Cuando otro microservicio es responsable de poblar el cache:
 
 ```csharp
-public async Task InvalidateUserCacheAsync(int userId)
+public class OrderService
 {
-    // Invalida todas las claves que coincidan con el patrón
-    var result = await _redisClient.InvalidatePatternAsync($"user:{userId}:*");
-    
-    _logger.LogInformation("Invalidated {Count} cache entries", result.Value);
+    private readonly IResilientRedisClient _redisClient;
+    private readonly IOrderProcessingService _orderProcessor;
+
+    public async Task<Order?> GetOrderAsync(int orderId)
+    {
+        var key = $"order:{orderId}";
+        
+        // Intentar obtener del cache
+        var cachedResult = await _redisClient.GetAsync<Order>(key);
+        
+        if (cachedResult.Success && cachedResult.Value != null)
+        {
+            return cachedResult.Value;
+        }
+
+        // Si no está en cache, solicitar al microservicio responsable
+        await _orderProcessor.RequestOrderCachingAsync(orderId);
+        
+        // Esperar un momento y reintentar
+        await Task.Delay(TimeSpan.FromMilliseconds(500));
+        
+        var retryResult = await _redisClient.GetAsync<Order>(key);
+        return retryResult.Value;
+    }
+}
+
+// Microservicio responsable del cache
+public class OrderProcessingService : IOrderProcessingService
+{
+    private readonly IResilientRedisClient _redisClient;
+    private readonly IOrderRepository _repository;
+
+    public async Task RequestOrderCachingAsync(int orderId)
+    {
+        // Obtener datos y cachear
+        var order = await _repository.GetOrderWithDetailsAsync(orderId);
+        if (order != null)
+        {
+            var key = $"order:{orderId}";
+            await _redisClient.SetAsync(key, order, TimeSpan.FromHours(2));
+        }
+    }
 }
 ```
 
-## Eventos de Service Bus
+### 🔄 **Patrón 4: Cache-Aside con Notificación**
 
-El cliente publica automáticamente eventos a Service Bus que puedes consumir:
+```csharp
+public class CatalogService
+{
+    private readonly IResilientRedisClient _redisClient;
+    private readonly ICatalogRepository _repository;
+    private readonly IServiceBus _serviceBus;
+
+    public async Task<Product?> GetProductAsync(int productId)
+    {
+        var key = $"product:{productId}";
+        
+        var result = await _redisClient.GetAsync<Product>(key);
+        
+        if (!result.Success || result.Value == null)
+        {
+            // Notificar que se necesita el producto en cache
+            await _serviceBus.PublishAsync(new ProductCacheRequest 
+            { 
+                ProductId = productId,
+                RequestedBy = "CatalogService",
+                Timestamp = DateTime.UtcNow
+            });
+            
+            // Obtener directamente de la base de datos como fallback
+            return await _repository.GetByIdAsync(productId);
+        }
+
+        return result.Value;
+    }
+}
+```
+
+## Configuración de Managed Identity
+
+### En Azure App Service
+
+1. Habilita System Assigned Identity en tu App Service
+2. Asigna los roles necesarios:
+   - **Redis**: "Redis Cache Contributor"
+   - **Service Bus**: "Azure Service Bus Data Sender"
+
+### En desarrollo local
+
+```bash
+az login
+# El cliente usará automáticamente tus credenciales de Azure CLI
+```
+
+## Monitoreo y Eventos
+
+Si tienes Service Bus habilitado, puedes monitorear eventos:
 
 ```csharp
 public class RedisEventHandler
@@ -154,54 +298,53 @@ public class RedisEventHandler
         {
             case RedisEventType.CacheMiss:
                 // Lógica para cache miss
+                _metrics.IncrementCounter("redis.cache_miss");
                 break;
             case RedisEventType.FallbackTriggered:
                 // Lógica para cuando se usa fallback
+                _metrics.IncrementCounter("redis.fallback_used");
                 break;
             case RedisEventType.Error:
                 // Lógica para errores
+                _logger.LogError("Redis error: {Message}", redisEvent.ErrorMessage);
                 break;
         }
     }
 }
 ```
 
-## Configuración de Managed Identity
-
-### En Azure App Service
-
-1. Habilita System Assigned Identity en tu App Service
-2. Asigna el rol "Redis Cache Contributor" a la identidad
-3. Configura `UseManagedIdentity: true`
-
-### En desarrollo local
-
-```bash
-az login
-# El cliente usará automáticamente tus credenciales de Azure CLI
-```
-
 ## Mejores Prácticas
 
-1. **Prefijos de Claves**: Usa prefijos consistentes para organizar tus datos
-2. **Expiración**: Siempre establece tiempos de expiración apropiados
-3. **Fallback**: Implementa servicios de fallback robustos
-4. **Monitoring**: Monitorea los eventos de Service Bus para detectar problemas
-5. **Testing**: Usa el patrón de inyección de dependencias para testing
+### 🎯 **Para Configuración**
+- Usa **configuración básica** si solo necesitas Redis
+- Habilita **Service Bus** solo si necesitas monitoreo de eventos
+- Configura **Managed Identity** en producción para mayor seguridad
+
+### 🎯 **Para Fallback**
+- Implementa timeouts apropiados en servicios de fallback
+- Considera el impacto en rendimiento de llamadas externas
+- Usa circuit breakers para servicios externos inestables
+
+### 🎯 **Para Microservicios**
+- Define claramente qué servicio es responsable de cada cache
+- Implementa patrones de notificación para cache warming
+- Usa TTL apropiados según la frecuencia de cambio de datos
 
 ## Troubleshooting
 
 ### Problemas de Conexión
-
-- Verifica que Managed Identity esté habilitada
+- Verifica connection strings o configuración de Managed Identity
 - Confirma que los roles de Azure estén asignados correctamente
 - Revisa los logs para errores de autenticación
 
 ### Problemas de Rendimiento
-
 - Ajusta los valores de timeout y retry
-- Monitorea las métricas de Service Bus
+- Monitorea las métricas de Service Bus (si está habilitado)
 - Considera usar connection pooling
+
+## Ejemplos Completos
+
+Ver la carpeta `examples/` para implementaciones completas de diferentes patrones.
 
 ## Contribuir
 
@@ -215,4 +358,4 @@ az login
 
 MIT License - ver [LICENSE](LICENSE) para detalles.
 
-## Hecho con amor por ju4r3v0l para mis amigos y la comunidad de desarrolladores. ❤️
+## Hecho con ❤️ por ju4r3v0l para la comunidad de desarrolladores

@@ -9,7 +9,7 @@
         
         <!-- Package Information -->
         <PackageId>ResilientRedis.Client</PackageId>
-        <PackageVersion>1.0.0</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <Title>Azure Redis Resilient Client</Title>
         <Authors>Juan Marulanda</Authors>
         <Company>Juan Marulanda</Company>
@@ -63,6 +63,7 @@ v1.0.0:
 
     <ItemGroup>
         <Compile Remove="Tests/**" />
+    <Compile Remove="examples/**" />
         <EmbeddedResource Remove="Tests/**" />
         <None Remove="Tests/**" />
     </ItemGroup>

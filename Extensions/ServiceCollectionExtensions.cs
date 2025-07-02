@@ -5,6 +5,7 @@ using ResilientRedis.Client.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace ResilientRedis.Client.Extensions;
@@ -26,78 +27,11 @@ public static class ServiceCollectionExtensions
         services.Configure<ServiceBusOptions>(configuration.GetSection(ServiceBusOptions.SectionName));
         services.Configure<FallbackServiceOptions>(configuration.GetSection(FallbackServiceOptions.SectionName));
 
-        // Registrar ConnectionMultiplexer como singleton
-        services.AddSingleton<IConnectionMultiplexer>(provider =>
-        {
-            var logger = provider.GetRequiredService<ILogger<IConnectionMultiplexer>>();
-            var redisOptions = configuration.GetSection(RedisOptions.SectionName).Get<RedisOptions>()
-                ?? throw new InvalidOperationException("Redis configuration is missing");
-
-            try
-            {
-                ConfigurationOptions configOptions;
-
-                if (!string.IsNullOrEmpty(redisOptions.ConnectionString))
-                {
-                    configOptions = ConfigurationOptions.Parse(redisOptions.ConnectionString);
-                }
-                else
-                {
-                    configOptions = new ConfigurationOptions
-                    {
-                        EndPoints = { $"{redisOptions.HostName}:{redisOptions.Port}" },
-                        Ssl = redisOptions.UseSsl,
-                        AbortOnConnectFail = false,
-                        ConnectRetry = 3,
-                        ConnectTimeout = 10000,
-                        SyncTimeout = 5000
-                    };
-
-                    if (redisOptions.UseManagedIdentity)
-                    {
-                        var credential = new DefaultAzureCredential();
-                        configOptions.ConfigurationChannel = "__keyspace@0__:*";
-                        // Para Azure Cache for Redis con Managed Identity
-                        configOptions.User = redisOptions.HostName.Split('.')[0];
-                    }
-                }
-
-                var multiplexer = ConnectionMultiplexer.Connect(configOptions);
-                
-                // Configurar eventos de conexión
-                multiplexer.ConnectionFailed += (sender, args) =>
-                {
-                    logger.LogError("Redis connection failed: {Exception}", args.Exception?.Message);
-                };
-
-                multiplexer.ConnectionRestored += (sender, args) =>
-                {
-                    logger.LogInformation("Redis connection restored");
-                };
-
-                logger.LogInformation("Redis connection established successfully");
-                return multiplexer;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to establish Redis connection");
-                throw;
-            }
-        });
-
-        // Registrar HttpClient para FallbackService
-        services.AddHttpClient<IFallbackService, FallbackService>();
-
-        // Registrar servicios
-        services.AddSingleton<IEventPublisher, EventPublisher>();
-        services.AddScoped<IFallbackService, FallbackService>();
-        services.AddScoped<IResilientRedisClient, ResilientRedisClient>();
-
-        return services;
+        return AddResilientRedisCore(services);
     }
 
     /// <summary>
-    /// Registra el cliente resiliente de Redis con configuración personalizada
+    /// Registra el cliente resiliente de Redis con configuración programática
     /// </summary>
     public static IServiceCollection AddResilientRedis(
         this IServiceCollection services,
@@ -109,71 +43,112 @@ public static class ServiceCollectionExtensions
         
         if (configureServiceBus != null)
             services.Configure(configureServiceBus);
-            
+        
         if (configureFallback != null)
             services.Configure(configureFallback);
 
-        // Registrar ConnectionMultiplexer
-        services.AddSingleton<IConnectionMultiplexer>(provider =>
+        return AddResilientRedisCore(services);
+    }
+
+    /// <summary>
+    /// Registra solo el cliente Redis básico sin Service Bus ni Fallback
+    /// </summary>
+    public static IServiceCollection AddResilientRedisBasic(
+        this IServiceCollection services,
+        Action<RedisOptions> configureRedis)
+    {
+        services.Configure(configureRedis);
+        
+        // Solo registrar Redis
+        services.AddSingleton<IConnectionMultiplexer>(CreateRedisConnection);
+        services.AddScoped<IResilientRedisClient, ResilientRedisClient>();
+        
+        // Registrar servicios dummy para dependencias opcionales
+        services.AddScoped<IEventPublisher, NoOpEventPublisher>();
+        services.AddScoped<IFallbackService, NoOpFallbackService>();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddResilientRedisCore(IServiceCollection services)
+    {
+        // Registrar ConnectionMultiplexer como singleton
+        services.AddSingleton<IConnectionMultiplexer>(CreateRedisConnection);
+
+        // Registrar HttpClient para FallbackService
+        services.AddHttpClient<IFallbackService, FallbackService>();
+
+        // Registrar servicios condicionalmente
+        services.AddScoped<IEventPublisher>(provider =>
         {
-            var logger = provider.GetRequiredService<ILogger<IConnectionMultiplexer>>();
-            var redisOptions = new RedisOptions();
-            configureRedis(redisOptions);
-
-            try
+            var serviceBusOptions = provider.GetRequiredService<IOptions<ServiceBusOptions>>().Value;
+            if (serviceBusOptions.EnableEventPublishing)
             {
-                ConfigurationOptions configOptions;
-
-                if (!string.IsNullOrEmpty(redisOptions.ConnectionString))
-                {
-                    configOptions = ConfigurationOptions.Parse(redisOptions.ConnectionString);
-                }
-                else
-                {
-                    configOptions = new ConfigurationOptions
-                    {
-                        EndPoints = { $"{redisOptions.HostName}:{redisOptions.Port}" },
-                        Ssl = redisOptions.UseSsl,
-                        AbortOnConnectFail = false,
-                        ConnectRetry = 3,
-                        ConnectTimeout = 10000,
-                        SyncTimeout = 5000
-                    };
-
-                    if (redisOptions.UseManagedIdentity)
-                    {
-                        var credential = new DefaultAzureCredential();
-                        configOptions.User = redisOptions.HostName.Split('.')[0];
-                    }
-                }
-
-                var multiplexer = ConnectionMultiplexer.Connect(configOptions);
-                
-                multiplexer.ConnectionFailed += (sender, args) =>
-                {
-                    logger.LogError("Redis connection failed: {Exception}", args.Exception?.Message);
-                };
-
-                multiplexer.ConnectionRestored += (sender, args) =>
-                {
-                    logger.LogInformation("Redis connection restored");
-                };
-
-                logger.LogInformation("Redis connection established successfully");
-                return multiplexer;
+                return new EventPublisher(
+                    provider.GetRequiredService<IOptions<ServiceBusOptions>>(),
+                    provider.GetRequiredService<ILogger<EventPublisher>>());
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to establish Redis connection");
-                throw;
-            }
+            return new NoOpEventPublisher();
         });
 
-        services.AddHttpClient<IFallbackService, FallbackService>();
-        services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddScoped<IFallbackService, FallbackService>();
         services.AddScoped<IResilientRedisClient, ResilientRedisClient>();
 
         return services;
+    }
+
+    private static IConnectionMultiplexer CreateRedisConnection(IServiceProvider provider)
+    {
+        var logger = provider.GetRequiredService<ILogger<IConnectionMultiplexer>>();
+        var redisOptions = provider.GetRequiredService<IOptions<RedisOptions>>().Value;
+
+        try
+        {
+            ConfigurationOptions configOptions;
+
+            if (!string.IsNullOrEmpty(redisOptions.ConnectionString))
+            {
+                // Usar connection string directamente
+                configOptions = ConfigurationOptions.Parse(redisOptions.ConnectionString);
+                logger.LogInformation("Connecting to Redis using connection string");
+            }
+            else if (redisOptions.UseManagedIdentity)
+            {
+                // Usar Managed Identity
+                configOptions = new ConfigurationOptions
+                {
+                    EndPoints = { $"{redisOptions.HostName}:{redisOptions.Port}" },
+                    Ssl = redisOptions.UseSsl,
+                    AbortOnConnectFail = false,
+                };
+
+                // Configurar autenticación con Managed Identity
+                configOptions.ConfigurationChannel = "__keyspace@0__:*";
+                logger.LogInformation("Connecting to Redis using Managed Identity for {HostName}:{Port}", 
+                    redisOptions.HostName, redisOptions.Port);
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "Either ConnectionString or HostName with UseManagedIdentity must be configured");
+            }
+
+            var multiplexer = ConnectionMultiplexer.Connect(configOptions);
+            
+            // Configurar eventos de conexión
+            multiplexer.ConnectionFailed += (sender, args) =>
+                logger.LogError("Redis connection failed: {Exception}", args.Exception);
+            
+            multiplexer.ConnectionRestored += (sender, args) =>
+                logger.LogInformation("Redis connection restored");
+
+            logger.LogInformation("Redis connection established successfully");
+            return multiplexer;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to connect to Redis");
+            throw;
+        }
     }
 }

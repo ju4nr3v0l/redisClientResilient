@@ -46,12 +46,12 @@
         </member>
         <member name="P:ResilientRedis.Client.Configuration.RedisOptions.ConnectionString">
             <summary>
-            Connection string para Redis (puede incluir Managed Identity)
+            Connection string para Redis (usado cuando no se usa Managed Identity)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.RedisOptions.HostName">
             <summary>
-            Nombre del host de Redis
+            Nombre del host de Redis (requerido cuando se usa Managed Identity)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.RedisOptions.Port">
@@ -66,7 +66,7 @@
         </member>
         <member name="P:ResilientRedis.Client.Configuration.RedisOptions.UseManagedIdentity">
             <summary>
-            Usar Managed Identity para autenticación
+            Usar Managed Identity para autenticación (opcional)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.RedisOptions.DefaultExpirationMinutes">
@@ -101,12 +101,12 @@
         </member>
         <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.ConnectionString">
             <summary>
-            Connection string de Service Bus
+            Connection string de Service Bus (usado cuando no se usa Managed Identity)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.Namespace">
             <summary>
-            Namespace de Service Bus
+            Namespace de Service Bus (requerido cuando se usa Managed Identity)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.RedisEventsTopic">
@@ -116,12 +116,12 @@
         </member>
         <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.UseManagedIdentity">
             <summary>
-            Usar Managed Identity para Service Bus
+            Usar Managed Identity para Service Bus (opcional)
             </summary>
         </member>
         <member name="P:ResilientRedis.Client.Configuration.ServiceBusOptions.EnableEventPublishing">
             <summary>
-            Habilitar publicación de eventos
+            Habilitar publicación de eventos (opcional)
             </summary>
         </member>
         <member name="T:ResilientRedis.Client.Extensions.ServiceCollectionExtensions">
@@ -136,7 +136,12 @@
         </member>
         <member name="M:ResilientRedis.Client.Extensions.ServiceCollectionExtensions.AddResilientRedis(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{ResilientRedis.Client.Configuration.RedisOptions},System.Action{ResilientRedis.Client.Configuration.ServiceBusOptions},System.Action{ResilientRedis.Client.Configuration.FallbackServiceOptions})">
             <summary>
-            Registra el cliente resiliente de Redis con configuración personalizada
+            Registra el cliente resiliente de Redis con configuración programática
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Extensions.ServiceCollectionExtensions.AddResilientRedisBasic(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{ResilientRedis.Client.Configuration.RedisOptions})">
+            <summary>
+            Registra solo el cliente Redis básico sin Service Bus ni Fallback
             </summary>
         </member>
         <member name="T:ResilientRedis.Client.Interfaces.IEventPublisher">
@@ -476,6 +481,36 @@
             <param name="parameters">Parameters for data creation</param>
             <param name="cancellationToken">Cancellation token</param>
             <returns>Created data or default value</returns>
+        </member>
+        <member name="T:ResilientRedis.Client.Services.NoOpEventPublisher">
+            <summary>
+            No-operation implementation of IEventPublisher for when Service Bus is disabled
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.NoOpEventPublisher.PublishAsync(ResilientRedis.Client.Models.RedisEvent,System.Threading.CancellationToken)">
+            <summary>
+            Does nothing - events are not published
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.NoOpEventPublisher.PublishBatchAsync(System.Collections.Generic.IEnumerable{ResilientRedis.Client.Models.RedisEvent},System.Threading.CancellationToken)">
+            <summary>
+            Does nothing - events are not published
+            </summary>
+        </member>
+        <member name="T:ResilientRedis.Client.Services.NoOpFallbackService">
+            <summary>
+            No-operation implementation of IFallbackService for when fallback is disabled
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.NoOpFallbackService.GetDataAsync``1(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns default value - no fallback data retrieval
+            </summary>
+        </member>
+        <member name="M:ResilientRedis.Client.Services.NoOpFallbackService.CreateDataAsync``1(System.String,System.Object,System.Threading.CancellationToken)">
+            <summary>
+            Returns default value - no fallback data creation
+            </summary>
         </member>
         <member name="T:ResilientRedis.Client.Services.ResilientRedisClient">
             <summary>
