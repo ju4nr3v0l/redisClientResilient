@@ -10,3 +10,6 @@
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Release/net8.0/refint/RedisNuget.dll
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Release/net8.0/RedisNuget.pdb
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Release/net8.0/ref/RedisNuget.dll
+/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Release/net8.0/RedisNuget.xml
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Release/net8.0/RedisNuget.sourcelink.json
+/Users/juanmarulanda/RiderProjects/RedisNuget/obj/Release/net8.0/RedisNuget.xml

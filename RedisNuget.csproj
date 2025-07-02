@@ -5,14 +5,69 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        
+        <!-- Package Information -->
         <PackageId>Azure.Redis.Resilient.Client</PackageId>
         <PackageVersion>1.0.0</PackageVersion>
+        <Title>Azure Redis Resilient Client</Title>
         <Authors>Juan Marulanda</Authors>
-        <Description>Cliente resiliente de Redis para Azure con Managed Identity, Service Bus integration y patrones de resiliencia</Description>
-        <PackageTags>Redis;Azure;Resilience;ServiceBus;ManagedIdentity</PackageTags>
-        <RepositoryUrl>https://github.com/your-repo/redis-nuget</RepositoryUrl>
+        <Company>Juan Marulanda</Company>
+        <Product>Azure Redis Resilient Client</Product>
+        <Description>A resilient Redis client for Azure Cache for Redis with Managed Identity support, Service Bus event publishing, and automatic fallback patterns. Includes retry policies, circuit breaker, and comprehensive logging.</Description>
+        <Summary>Resilient Redis client with Managed Identity, Service Bus integration, and fallback system for Azure applications.</Summary>
+        <PackageTags>Redis;Azure;Resilience;ServiceBus;ManagedIdentity;Cache;Fallback;Polly;Retry;CircuitBreaker</PackageTags>
+        <Copyright>Copyright © Juan Marulanda 2024</Copyright>
+        
+        <!-- URLs and Repository -->
+        <PackageProjectUrl>https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryBranch>main</RepositoryBranch>
+        
+        <!-- License -->
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        
+        <!-- README -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        
+        <!-- Icon -->
+        <PackageIcon>icon.png</PackageIcon>
+        
+        <!-- Release Notes -->
+        <PackageReleaseNotes>
+v1.0.0:
+- Initial release with resilient Redis client
+- Azure Managed Identity support
+- Service Bus event publishing
+- Automatic fallback system
+- Comprehensive logging and metrics
+- Flexible configuration options
+        </PackageReleaseNotes>
+        
+        <!-- Language and Localization -->
+        <NeutralLanguage>en-US</NeutralLanguage>
+        
+        <!-- Build Configuration -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        
+        <!-- Assembly Information -->
+        <AssemblyTitle>Azure Redis Resilient Client</AssemblyTitle>
+        <AssemblyDescription>A resilient Redis client for Azure with Managed Identity and Service Bus integration</AssemblyDescription>
+        <AssemblyCompany>Juan Marulanda</AssemblyCompany>
+        <AssemblyProduct>Azure Redis Resilient Client</AssemblyProduct>
+        <AssemblyCopyright>Copyright © Juan Marulanda 2024</AssemblyCopyright>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="LICENSE" Pack="true" PackagePath="\" />
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="CHANGELOG.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="StackExchange.Redis" Version="2.7.33" />

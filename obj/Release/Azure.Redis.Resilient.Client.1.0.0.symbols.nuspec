@@ -38,11 +38,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Release/net8.0/RedisNuget.dll" target="lib/net8.0/RedisNuget.dll" />
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Release/net8.0/RedisNuget.xml" target="lib/net8.0/RedisNuget.xml" />
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/README.md" target="/README.md" />
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/LICENSE" target="/LICENSE" />
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/icon.png" target="/icon.png" />
-    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/CHANGELOG.md" target="/CHANGELOG.md" />
+    <file src="/Users/juanmarulanda/RiderProjects/RedisNuget/bin/Release/net8.0/RedisNuget.pdb" target="lib/net8.0/RedisNuget.pdb" />
   </files>
 </package>
