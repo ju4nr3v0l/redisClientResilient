@@ -8,8 +8,8 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         
         <!-- Package Information -->
-        <PackageId>ResilientRedis.Client</PackageId>
-        <PackageVersion>1.1.0</PackageVersion>
+        <PackageId>Redis.Resilient.Client</PackageId>
+        <PackageVersion>1.0.7</PackageVersion>
         <Title>Azure Redis Resilient Client</Title>
         <Authors>Juan Marulanda</Authors>
         <Company>Juan Marulanda</Company>
@@ -55,6 +55,7 @@ v1.0.0:
     </PropertyGroup>
 
     <ItemGroup>
+        <None Include="Examples\ExampleUsage.cs" />
         <None Include="README.md" Pack="true" PackagePath="\" />
         <None Include="LICENSE" Pack="true" PackagePath="\" />
         <None Include="icon.png" Pack="true" PackagePath="\" />

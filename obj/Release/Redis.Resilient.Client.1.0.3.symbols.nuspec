@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Redis.Resilient.Client</id>
+    <version>1.0.3</version>
+    <title>Azure Redis Resilient Client</title>
+    <authors>Juan Marulanda</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <icon>icon.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client</projectUrl>
+    <description>A resilient Redis client for Azure Cache for Redis with Managed Identity support, Service Bus event publishing, and automatic fallback patterns. Includes retry policies, circuit breaker, and comprehensive logging.</description>
+    <releaseNotes>v1.0.0:
+- Initial release with resilient Redis client
+- Azure Managed Identity support
+- Service Bus event publishing
+- Automatic fallback system
+- Comprehensive logging and metrics
+- Flexible configuration options</releaseNotes>
+    <copyright>Copyright © Juan Marulanda 2024</copyright>
+    <tags>Redis Azure Resilience ServiceBus ManagedIdentity Cache Fallback Polly Retry CircuitBreaker</tags>
+    <repository type="git" url="https://github.com/ju4r3v0l/Azure.Redis.Resilient.Client" branch="main" commit="47bf870acd6c194101a10d2d40a97f89c6e40c65" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Azure.Identity" version="1.12.1" exclude="Build,Analyzers" />
+        <dependency id="Azure.Messaging.ServiceBus" version="7.17.5" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Hosting" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Http" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="8.0.2" exclude="Build,Analyzers" />
+        <dependency id="Polly" version="8.2.0" exclude="Build,Analyzers" />
+        <dependency id="StackExchange.Redis" version="2.7.33" exclude="Build,Analyzers" />
+        <dependency id="System.Text.Json" version="8.0.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\repo\redisClientResilient\bin\Release\net8.0\RedisNuget.pdb" target="lib\net8.0\RedisNuget.pdb" />
+  </files>
+</package>

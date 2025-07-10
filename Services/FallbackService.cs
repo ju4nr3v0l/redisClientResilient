@@ -31,10 +31,13 @@ public class FallbackService : IFallbackService
         _httpClient.BaseAddress = new Uri(_options.BaseUrl);
         _httpClient.Timeout = TimeSpan.FromSeconds(_options.TimeoutSeconds);
 
-        // Agregar headers adicionales
+        // Agregar headers adicionales, excepto Content-Type
         foreach (var header in _options.Headers)
         {
-            _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+            if (!string.Equals(header.Key, "Content-Type", StringComparison.OrdinalIgnoreCase))
+            {
+                _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+            }
         }
     }
 

@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj": {}
+    "C:\\repo\\redisClientResilient\\RedisNuget.csproj": {}
   },
   "projects": {
-    "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj": {
-      "version": "1.1.0",
+    "C:\\repo\\redisClientResilient\\RedisNuget.csproj": {
+      "version": "1.0.7",
       "restore": {
-        "projectUniqueName": "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj",
-        "projectName": "ResilientRedis.Client",
-        "projectPath": "/Users/juanmarulanda/RiderProjects/RedisNuget/RedisNuget.csproj",
-        "packagesPath": "/Users/juanmarulanda/.nuget/packages/",
-        "outputPath": "/Users/juanmarulanda/RiderProjects/RedisNuget/obj/",
+        "projectUniqueName": "C:\\repo\\redisClientResilient\\RedisNuget.csproj",
+        "projectName": "Redis.Resilient.Client",
+        "projectPath": "C:\\repo\\redisClientResilient\\RedisNuget.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\repo\\redisClientResilient\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/juanmarulanda/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -104,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/juanmarulanda/.asdf/installs/dotnet-core/8.0.411/sdk/8.0.411/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

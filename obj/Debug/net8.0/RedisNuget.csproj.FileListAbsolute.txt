@@ -11,3 +11,16 @@
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.xml
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/RedisNuget.pdb
 /Users/juanmarulanda/RiderProjects/RedisNuget/obj/Debug/net8.0/ref/RedisNuget.dll
+C:\repo\redisClientResilient\bin\Debug\net8.0\RedisNuget.deps.json
+C:\repo\redisClientResilient\bin\Debug\net8.0\RedisNuget.dll
+C:\repo\redisClientResilient\bin\Debug\net8.0\RedisNuget.pdb
+C:\repo\redisClientResilient\bin\Debug\net8.0\RedisNuget.xml
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.csproj.AssemblyReference.cache
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.GeneratedMSBuildEditorConfig.editorconfig
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.csproj.CoreCompileInputs.cache
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.sourcelink.json
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.dll
+C:\repo\redisClientResilient\obj\Debug\net8.0\refint\RedisNuget.dll
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.xml
+C:\repo\redisClientResilient\obj\Debug\net8.0\RedisNuget.pdb
+C:\repo\redisClientResilient\obj\Debug\net8.0\ref\RedisNuget.dll
